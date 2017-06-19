@@ -1,8 +1,7 @@
 """
-Support for Digital Loggers DIN III Relays.
+Support for OpenSprinkler.
 
-For more details about this platform, please refer to the documentation at
-https://home-assistant.io/components/switch.digitalloggers/
+Only tested on firmware 2.1.7
 """
 import logging
 from datetime import timedelta
@@ -52,7 +51,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Find and return DIN III Relay switch."""
+    """Find and return OpenSprinkler device."""
     import opensprinkler
 
     host = config.get(CONF_HOST)
