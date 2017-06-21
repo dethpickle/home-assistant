@@ -14,7 +14,7 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.util import Throttle
 
-REQUIREMENTS = ['opensprinkler==0.something']
+REQUIREMENTS = ['python-opensprinkler==0.1.22']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     refresh = config.get(CONF_REFRESH)
     retries = config.get(CONF_RETRIES)
 
-    sprinkler_device = opensprinkler.OpenSprinkler(
+    sprinkler_device = opensprinkler.OSDevice(
         hostname=host, password=pswd, timeout=tout,
         defaultstationruntime=runtime, fulldatarefresh=refresh,
         maxretries=retries
@@ -112,11 +112,11 @@ class OpenSprinklerStation(SwitchDevice):
 
     def turn_on(self, **kwargs):
         """Instruct the relay to turn on."""
-        self._parent_device.turn_on(outlet=self.stationnumber)
+        self._parent_device.turn_on(station=self.stationnumber-1)
 
     def turn_off(self, **kwargs):
         """Instruct the relay to turn off."""
-        self._parent_device.turn_off(outlet=self.stationnumber)
+        self._parent_device.turn_off(station=self.stationnumber-1)
 
     def update(self):
         """Trigger update for all switches on the parent device."""
