@@ -14,7 +14,7 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.util import Throttle
 
-REQUIREMENTS = ['python-opensprinkler==0.1.22']
+REQUIREMENTS = ['python-opensprinkler==0.2.0']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -98,7 +98,7 @@ class OpenSprinklerStation(SwitchDevice):
     @property
     def name(self):
         """Return the display name of this relay."""
-        return self._outletname
+        return self._stationname
 
     @property
     def is_on(self):
@@ -124,7 +124,7 @@ class OpenSprinklerStation(SwitchDevice):
         self._is_on = (
             self._parent_device.statuslocal[self.stationnumber - 1][2] == 'ON'
         )
-        self._outletname = "{}_{}".format(
+        self._stationname = "{}_{}".format(
             self.controllername,
             self._parent_device.statuslocal[self.stationnumber - 1][1]
         )
