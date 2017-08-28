@@ -65,7 +65,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     parent_device = DINRelayDevice(power_switch)
 
     devices.extend(
-        DINRelay(controllername, device.outlet_number, parent_device)
+        DINRelay(controllername, device, parent_device)
         for device in power_switch
     )
 
@@ -75,13 +75,13 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class DINRelay(SwitchDevice):
     """Representation of a individual DIN III relay port."""
 
-    def __init__(self, name, outletnumber, parent_device):
+    def __init__(self, name, device, parent_device):
         """Initialize the DIN III Relay switch."""
         self._parent_device = parent_device
         self.controllername = name
-        self.outletnumber = outletnumber
-        self._outletname = ''
-        self._is_on = False
+        self.outletnumber = device.outlet_number
+        self._outletname = device.name
+        self._is_on = device.state == "ON"
 
     @property
     def name(self):
@@ -124,7 +124,7 @@ class DINRelayDevice(object):
     def __init__(self, device):
         """Initialize the DINRelay device."""
         self._device = device
-        self.statuslocal = None
+        self.statuslocal = self._device.statuslist()
 
     def turn_on(self, **kwargs):
         """Instruct the relay to turn on."""
